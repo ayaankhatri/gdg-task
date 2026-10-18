@@ -89,8 +89,8 @@ export class SettingsStore {
     if (valid === undefined || valid === this.state[key].value) return;
     this.counter = Math.max(this.counter, maxCounter(this.state)) + 1;
     this.state = { ...this.state, [key]: { value: valid, stamp: { counter: this.counter, tabId: this.deps.tabId } } };
-    this.persist();
     this.deps.transport.send({ type: "state", from: this.deps.tabId, sentAt: this.deps.now(), state: this.state });
+    this.persist();
     this.emit({ source: "local" });
   }
 
