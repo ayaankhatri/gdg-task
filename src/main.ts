@@ -59,6 +59,12 @@ function settingsIcon(): SVGElement {
   ]);
 }
 
+function menuIcon(): SVGElement {
+  return svg("svg", { viewBox: "0 0 24 24", width: "20", height: "20", "aria-hidden": "true" }, [
+    svg("path", { d: "M4 7h16M4 12h16M4 17h16", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round" }),
+  ]);
+}
+
 function renderSegment(segment: Segment): Node {
   return typeof segment === "string" ? document.createTextNode(segment) : element("em", { textContent: segment.em });
 }
@@ -111,11 +117,16 @@ function currentRoute(): Route {
   return location.hash === ROUTES.about ? "about" : "home";
 }
 
-function applyToDocument(settings: Settings): void {
+function applyToDocument(settings: Settings, animate: boolean): void {
   const root = document.documentElement;
+  if (!animate) root.classList.add("instant");
   root.dataset.theme = settings.darkMode ? "dark" : "light";
   root.lang = settings.language;
   root.style.setProperty("--font-size", `${settings.fontSize}px`);
+  if (!animate) {
+    void document.body.offsetWidth;
+    root.classList.remove("instant");
+  }
 }
 
 const store = new SettingsStore({
@@ -211,7 +222,32 @@ newTabButton.append(
 );
 const nav = element("nav", { className: "site-nav" }, [navLinks.home, navLinks.about, newTabButton]);
 nav.setAttribute("aria-label", "Main");
+const menu = element("div", { id: "site-menu", className: "menu" }, [nav, settingsButton]);
+const menuButton = element("button", { type: "button", className: "menu-button" }, [menuIcon()]);
+menuButton.setAttribute("aria-controls", menu.id);
+menuButton.setAttribute("aria-expanded", "false");
+const header = element("header", { className: "site-header" }, [
+  element("a", { className: "brand", href: ROUTES.home }, [
+    element("img", { src: logoUrl, alt: "GDG logo", className: "brand-logo" }),
+    element("h1", { textContent: APP_TITLE }),
+  ]),
+  menuButton,
+  menu,
+]);
 const content = element("main");
+
+function setMenuOpen(open: boolean): void {
+  header.classList.toggle("menu-open", open);
+  menuButton.setAttribute("aria-expanded", String(open));
+}
+
+function fitHeader(): void {
+  const overflows = () => header.scrollWidth > header.clientWidth;
+  header.classList.remove("compact", "tiny");
+  if (overflows()) header.classList.add("compact");
+  if (overflows()) header.classList.add("tiny");
+  if (!header.classList.contains("compact")) setMenuOpen(false);
+}
 
 function showRoute(): void {
   const route = currentRoute();
@@ -223,14 +259,7 @@ function showRoute(): void {
 }
 
 document.getElementById("app")!.replaceWith(
-  element("header", { className: "site-header" }, [
-    element("a", { className: "brand", href: ROUTES.home }, [
-      element("img", { src: logoUrl, alt: "GDG logo", className: "brand-logo" }),
-      element("h1", { textContent: APP_TITLE }),
-    ]),
-    nav,
-    settingsButton,
-  ]),
+  header,
   content,
   element("footer", { className: "site-footer" }, [madeBy, textSource]),
   settingsDialog,
@@ -238,14 +267,15 @@ document.getElementById("app")!.replaceWith(
 
 let lastSync: ChangeInfo | undefined;
 
-function render(settings: Settings): void {
+function render(settings: Settings, animate = false): void {
   const strings = STRINGS[settings.language];
-  applyToDocument(settings);
+  applyToDocument(settings, animate);
   document.title = APP_TITLE;
   settingsButtonLabel.textContent = strings.settings;
   navLinks.home.textContent = strings.navHome;
   navLinks.about.textContent = strings.navAbout;
   newTabLabel.textContent = strings.newTab;
+  menuButton.setAttribute("aria-label", strings.menu);
   madeBy.replaceChildren(`${strings.madeBy} `, externalLink(GITHUB_URL, "ayaankhatri"));
   textSource.replaceChildren(
     `${strings.textSource} `,
@@ -270,10 +300,28 @@ function render(settings: Settings): void {
   const syncText =
     lastSync?.latencyMs !== undefined ? `${lastSync.latencyMs.toFixed(1)} ms` : lastSync ? "storage" : strings.noSyncYet;
   syncInfo.textContent = `${strings.lastSync}: ${syncText}`;
+  fitHeader();
 }
 
 newTabButton.addEventListener("click", () => window.open(location.href, "_blank", "noopener"));
-settingsButton.addEventListener("click", () => settingsDialog.showModal());
+settingsButton.addEventListener("click", () => {
+  setMenuOpen(false);
+  settingsDialog.showModal();
+});
+menuButton.addEventListener("click", () => setMenuOpen(!header.classList.contains("menu-open")));
+nav.addEventListener("click", (event) => {
+  if (event.target instanceof Element && event.target.closest("a, button")) setMenuOpen(false);
+});
+document.addEventListener("click", (event) => {
+  if (event.target instanceof Node && !header.contains(event.target)) setMenuOpen(false);
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && header.classList.contains("menu-open")) {
+    setMenuOpen(false);
+    menuButton.focus();
+  }
+});
+new ResizeObserver(fitHeader).observe(document.documentElement);
 closeButton.addEventListener("click", () => settingsDialog.close());
 settingsDialog.addEventListener("click", (event) => {
   if (event.target === settingsDialog) settingsDialog.close();
@@ -306,7 +354,7 @@ document.addEventListener("visibilitychange", () => {
 
 store.subscribe((settings, info) => {
   if (info.source !== "local") lastSync = info;
-  render(settings);
+  render(settings, info.source === "local");
 });
 window.addEventListener("hashchange", () => {
   showRoute();

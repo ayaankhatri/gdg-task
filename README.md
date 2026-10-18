@@ -2,12 +2,16 @@
 
 GDG Tech Wildcard Entry, Frontend Task 1. A TypeScript web app that keeps user preferences (dark mode, language, font size) in sync across every open browser tab in real time, persists them across sessions, and resolves simultaneous edits deterministically.
 
+Live site: https://gdg-task-eight.vercel.app/
+
 ## Features
 
 - A GDG-VIT themed page (beige light theme with a warm dark variant) with a header, a GDG-VIT banner, an article, and a footer.
 - A navbar with two pages, **Home** and **About Lorem ipsum**, plus an **Open in new tab** button that opens the current page in another tab so you can watch changes sync. Every page follows the saved preferences.
+- A responsive header that works from small phones to wide desktops. When the navbar no longer fits on one line, it collapses into a hamburger menu that holds the pages, **Open in new tab** and **Settings**. When even the title does not fit, only the logo is kept. The check measures the real header, so it also adapts to the chosen language and font size. The menu closes on Escape, on a click outside it, and after picking an item.
 - A **Settings** button in the header opens a preferences dialog with a dark-mode toggle, a language selector (English, Español, Français, Deutsch, हिन्दी), and a font-size slider plus dropdown (12–24 px). The slider applies the new size when released.
 - Text and images on every page scale proportionally with the chosen font size, while the page width stays fixed (up to 1100 px).
+- Switching between light and dark mode animates only in the tab where you changed it. Other tabs switch instantly, so returning to a tab never shows the theme fading over.
 - Real-time sync between tabs without reloading. Measured latency is shown in the settings dialog (typically under 1 ms on the same machine; the target is 100 ms).
 - Preferences persist after all tabs are closed and are restored on reopen.
 - New tabs render with the correct theme, language and font size on the first paint, with no flash of the wrong theme.
@@ -46,7 +50,9 @@ npm test
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Page shell with a tiny inline script that applies saved settings before first paint |
+| `index.html` | Page shell with the per-theme background colour and the first-paint script |
+| `public/theme-init.js` | Applies saved theme, language and font size before first paint |
+| `vercel.json` | Security headers (Content Security Policy and others) for the Vercel deployment |
 | `src/settings.ts` | Settings schema, defaults and validation |
 | `src/state.ts` | Versioned per-field state and the merge function |
 | `src/store.ts` | `SettingsStore`: local edits, persistence, cross-tab messaging |
@@ -66,7 +72,7 @@ The app has no runtime dependencies. Everything it ships uses browser APIs only 
 | [Vite](https://vite.dev/) | Dev server and production bundler |
 | [Vitest](https://vitest.dev/) | Unit test runner |
 
-No external fonts, icons or other assets are used. The GDG-VIT logo and banner in `src/assets/` are SVGs made for this project in the style of the GDG brackets logo.
+No external fonts, icons or other assets are used. The GDG-VIT logo and banner in `src/assets/` are SVGs made for this project in the style of the GDG brackets logo. Google Developer Groups and the GDG logo are trademarks of Google LLC. This is a student task submission and is not an official Google or GDG product.
 
 The article text is adapted from the Wikipedia article [Lorem ipsum](https://en.wikipedia.org/wiki/Lorem_ipsum), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). It is shown in English in every UI language. The About page is a summary written for this project from facts in the same article. Its photo, a Letraset sample sheet, is [public domain via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Letraset_Lorem_Ipsum.jpg).
 
@@ -99,7 +105,7 @@ If a tab notices through a `storage` event that the stored copy is missing an ed
 
 ### Persistence and initialization
 
-The merged state is stored in `localStorage` under `settings-sync:v1`. A small synchronous script in `<head>` reads it and sets `data-theme`, `lang` and the font-size CSS variable on `<html>` before the body is parsed. An inline background colour for each theme lives in the same `<head>`, so the first frame already has the correct theme before the main bundle loads.
+The merged state is stored in `localStorage` under `settings-sync:v1`. A small synchronous script in `<head>` (`public/theme-init.js`, kept external so the Content Security Policy needs no inline scripts) reads it and sets `data-theme`, `lang` and the font-size CSS variable on `<html>` before the body is parsed. An inline background colour for each theme lives in the same `<head>`, so the first frame already has the correct theme before the main bundle loads.
 
 ### Input validation
 

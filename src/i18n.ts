@@ -17,6 +17,7 @@ export interface Strings {
   navHome: string;
   navAbout: string;
   newTab: string;
+  menu: string;
 }
 
 export const LANGUAGE_NAMES: Record<Language, string> = {
@@ -45,6 +46,7 @@ export const STRINGS: Record<Language, Strings> = {
     navHome: "Home",
     navAbout: "About Lorem ipsum",
     newTab: "Open in new tab",
+    menu: "Menu",
   },
   es: {
     title: "Preferencias",
@@ -63,6 +65,7 @@ export const STRINGS: Record<Language, Strings> = {
     navHome: "Inicio",
     navAbout: "Sobre Lorem ipsum",
     newTab: "Abrir en una pestaña nueva",
+    menu: "Menú",
   },
   fr: {
     title: "Préférences",
@@ -81,6 +84,7 @@ export const STRINGS: Record<Language, Strings> = {
     navHome: "Accueil",
     navAbout: "À propos de Lorem ipsum",
     newTab: "Ouvrir dans un nouvel onglet",
+    menu: "Menu",
   },
   de: {
     title: "Einstellungen",
@@ -99,6 +103,7 @@ export const STRINGS: Record<Language, Strings> = {
     navHome: "Startseite",
     navAbout: "Über Lorem ipsum",
     newTab: "In neuem Tab öffnen",
+    menu: "Menü",
   },
   hi: {
     title: "पसंद",
@@ -117,5 +122,6 @@ export const STRINGS: Record<Language, Strings> = {
     navHome: "होम",
     navAbout: "Lorem ipsum के बारे में",
     newTab: "नए टैब में खोलें",
+    menu: "मेनू",
   },
 };
