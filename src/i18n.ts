@@ -14,6 +14,9 @@ export interface Strings {
   close: string;
   madeBy: string;
   textSource: string;
+  navHome: string;
+  navAbout: string;
+  newTab: string;
 }
 
 export const LANGUAGE_NAMES: Record<Language, string> = {
@@ -39,6 +42,9 @@ export const STRINGS: Record<Language, Strings> = {
     close: "Close",
     madeBy: "Made by",
     textSource: "Text adapted from",
+    navHome: "Home",
+    navAbout: "About Lorem ipsum",
+    newTab: "Open in new tab",
   },
   es: {
     title: "Preferencias",
@@ -54,6 +60,9 @@ export const STRINGS: Record<Language, Strings> = {
     close: "Cerrar",
     madeBy: "Hecho por",
     textSource: "Texto adaptado de",
+    navHome: "Inicio",
+    navAbout: "Sobre Lorem ipsum",
+    newTab: "Abrir en una pestaña nueva",
   },
   fr: {
     title: "Préférences",
@@ -69,6 +78,9 @@ export const STRINGS: Record<Language, Strings> = {
     close: "Fermer",
     madeBy: "Réalisé par",
     textSource: "Texte adapté de",
+    navHome: "Accueil",
+    navAbout: "À propos de Lorem ipsum",
+    newTab: "Ouvrir dans un nouvel onglet",
   },
   de: {
     title: "Einstellungen",
@@ -84,6 +96,9 @@ export const STRINGS: Record<Language, Strings> = {
     close: "Schließen",
     madeBy: "Erstellt von",
     textSource: "Text übernommen aus",
+    navHome: "Startseite",
+    navAbout: "Über Lorem ipsum",
+    newTab: "In neuem Tab öffnen",
   },
   hi: {
     title: "पसंद",
@@ -99,5 +114,8 @@ export const STRINGS: Record<Language, Strings> = {
     close: "बंद करें",
     madeBy: "निर्माता",
     textSource: "पाठ का स्रोत",
+    navHome: "होम",
+    navAbout: "Lorem ipsum के बारे में",
+    newTab: "नए टैब में खोलें",
   },
 };
