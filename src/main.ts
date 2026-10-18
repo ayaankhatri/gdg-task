@@ -117,8 +117,13 @@ darkMode.addEventListener("change", () => store.update("darkMode", darkMode.chec
 language.addEventListener("change", () => {
   if (isLanguage(language.value)) store.update("language", language.value);
 });
-fontSize.addEventListener("input", () => store.update("fontSize", Number(fontSize.value)));
-fontSize.addEventListener("change", () => render(store.settings));
+fontSize.addEventListener("input", () => {
+  fontSizeValue.textContent = fontSize.value;
+});
+fontSize.addEventListener("change", () => {
+  store.update("fontSize", Number(fontSize.value));
+  render(store.settings);
+});
 
 window.addEventListener("storage", (event) => {
   if (event.storageArea === window.localStorage && event.key === STORAGE_KEY) {
