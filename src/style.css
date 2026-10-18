@@ -88,6 +88,12 @@ main {
   cursor: pointer;
 }
 
+.site-nav .new-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .site-nav a:hover,
 .site-nav button:hover {
   color: var(--text);

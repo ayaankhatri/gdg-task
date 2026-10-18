@@ -194,7 +194,22 @@ const navLinks: Record<Route, HTMLAnchorElement> = {
   home: element("a", { href: ROUTES.home }),
   about: element("a", { href: ROUTES.about }),
 };
-const nav = element("nav", { className: "site-nav" }, [navLinks.home, navLinks.about]);
+const newTabButton = element("button", { type: "button", className: "new-tab" });
+const newTabLabel = element("span");
+newTabButton.append(
+  newTabLabel,
+  svg("svg", { viewBox: "0 0 24 24", width: "14", height: "14", "aria-hidden": "true" }, [
+    svg("path", {
+      d: "M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+    }),
+  ]),
+);
+const nav = element("nav", { className: "site-nav" }, [navLinks.home, navLinks.about, newTabButton]);
 nav.setAttribute("aria-label", "Main");
 const content = element("main");
 
@@ -230,6 +245,7 @@ function render(settings: Settings): void {
   settingsButtonLabel.textContent = strings.settings;
   navLinks.home.textContent = strings.navHome;
   navLinks.about.textContent = strings.navAbout;
+  newTabLabel.textContent = strings.newTab;
   madeBy.replaceChildren(`${strings.madeBy} `, externalLink(GITHUB_URL, "ayaankhatri"));
   textSource.replaceChildren(
     `${strings.textSource} `,
@@ -256,6 +272,7 @@ function render(settings: Settings): void {
   syncInfo.textContent = `${strings.lastSync}: ${syncText}`;
 }
 
+newTabButton.addEventListener("click", () => window.open(location.href, "_blank", "noopener"));
 settingsButton.addEventListener("click", () => settingsDialog.showModal());
 closeButton.addEventListener("click", () => settingsDialog.close());
 settingsDialog.addEventListener("click", (event) => {
