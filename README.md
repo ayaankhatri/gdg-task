@@ -11,7 +11,7 @@ Live site: https://gdg-task-eight.vercel.app/
 - A responsive header that works from small phones to wide desktops. When the navbar no longer fits on one line, it collapses into a hamburger menu that holds the pages, **Open in new tab** and **Settings**. When even the title does not fit, only the logo is kept. The check measures the real header, so it also adapts to the chosen language and font size. The menu closes on Escape, on a click outside it, and after picking an item.
 - A **Settings** button in the header opens a preferences dialog with a dark-mode toggle, a language selector (English, Español, Français, Deutsch, हिन्दी), and a font-size slider plus dropdown (12–24 px). The slider applies the new size when released.
 - Text and images on every page scale proportionally with the chosen font size, while the page width stays fixed (up to 1100 px).
-- Switching between light and dark mode animates only in the tab where you changed it. Other tabs switch instantly, so returning to a tab never shows the theme fading over.
+- Settings apply instantly with no transitions, so a synced tab never shows a change animating in.
 - Real-time sync between tabs without reloading. Measured latency is shown in the settings dialog (typically under 1 ms on the same machine; the target is 100 ms).
 - Preferences persist after all tabs are closed and are restored on reopen.
 - New tabs render with the correct theme, language and font size on the first paint, with no flash of the wrong theme.

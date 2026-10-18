@@ -23,11 +23,6 @@
   box-sizing: border-box;
 }
 
-.instant *,
-.instant *::after {
-  transition: none !important;
-}
-
 html {
   font-size: var(--font-size);
 }
@@ -39,7 +34,6 @@ body {
   color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", sans-serif;
   line-height: 1.5;
-  transition: background-color 0.15s, color 0.15s;
 }
 
 main {
@@ -384,7 +378,6 @@ a {
   position: relative;
   cursor: pointer;
   margin: 0;
-  transition: background-color 0.15s;
 }
 
 .switch::after {
@@ -396,7 +389,6 @@ a {
   height: 18px;
   border-radius: 50%;
   background: #fff;
-  transition: transform 0.15s;
 }
 
 .switch:checked {

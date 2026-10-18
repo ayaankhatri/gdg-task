@@ -117,20 +117,11 @@ function currentRoute(): Route {
   return location.hash === ROUTES.about ? "about" : "home";
 }
 
-let instantFrame = 0;
-
-function applyToDocument(settings: Settings, animate: boolean): void {
+function applyToDocument(settings: Settings): void {
   const root = document.documentElement;
-  cancelAnimationFrame(instantFrame);
-  root.classList.toggle("instant", !animate);
   root.dataset.theme = settings.darkMode ? "dark" : "light";
   root.lang = settings.language;
   root.style.setProperty("--font-size", `${settings.fontSize}px`);
-  if (!animate) {
-    instantFrame = requestAnimationFrame(() => {
-      instantFrame = requestAnimationFrame(() => root.classList.remove("instant"));
-    });
-  }
 }
 
 const store = new SettingsStore({
@@ -277,9 +268,9 @@ document.getElementById("app")!.replaceWith(
 
 let lastSync: ChangeInfo | undefined;
 
-function render(settings: Settings, animate = false): void {
+function render(settings: Settings): void {
   const strings = STRINGS[settings.language];
-  applyToDocument(settings, animate);
+  applyToDocument(settings);
   showRoute(settings.language);
   document.title = APP_TITLE;
   settingsButtonLabel.textContent = strings.settings;
@@ -365,7 +356,7 @@ document.addEventListener("visibilitychange", () => {
 
 store.subscribe((settings, info) => {
   if (info.source !== "local") lastSync = info;
-  render(settings, info.source === "local");
+  render(settings);
 });
 window.addEventListener("hashchange", () => {
   showRoute(store.settings.language);
