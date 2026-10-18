@@ -11,6 +11,8 @@ export interface Strings {
   lastSync: string;
   noSyncYet: string;
   hint: string;
+  settings: string;
+  close: string;
 }
 
 export const LANGUAGE_NAMES: Record<Language, string> = {
@@ -33,6 +35,8 @@ export const STRINGS: Record<Language, Strings> = {
     lastSync: "Last update from another tab",
     noSyncYet: "none yet",
     hint: "Open this page in another tab and change a setting.",
+    settings: "Settings",
+    close: "Close",
   },
   es: {
     title: "Preferencias",
@@ -45,6 +49,8 @@ export const STRINGS: Record<Language, Strings> = {
     lastSync: "Última actualización de otra pestaña",
     noSyncYet: "ninguna aún",
     hint: "Abre esta página en otra pestaña y cambia un ajuste.",
+    settings: "Ajustes",
+    close: "Cerrar",
   },
   fr: {
     title: "Préférences",
@@ -57,6 +63,8 @@ export const STRINGS: Record<Language, Strings> = {
     lastSync: "Dernière mise à jour d'un autre onglet",
     noSyncYet: "aucune pour l'instant",
     hint: "Ouvrez cette page dans un autre onglet et modifiez un réglage.",
+    settings: "Paramètres",
+    close: "Fermer",
   },
   de: {
     title: "Einstellungen",
@@ -69,6 +77,8 @@ export const STRINGS: Record<Language, Strings> = {
     lastSync: "Letzte Änderung aus einem anderen Tab",
     noSyncYet: "noch keine",
     hint: "Öffne diese Seite in einem anderen Tab und ändere eine Einstellung.",
+    settings: "Einstellungen",
+    close: "Schließen",
   },
   hi: {
     title: "पसंद",
@@ -81,5 +91,7 @@ export const STRINGS: Record<Language, Strings> = {
     lastSync: "दूसरे टैब से आख़िरी बदलाव",
     noSyncYet: "अभी कोई नहीं",
     hint: "इस पेज को दूसरे टैब में खोलें और कोई सेटिंग बदलें।",
+    settings: "सेटिंग्स",
+    close: "बंद करें",
   },
 };
