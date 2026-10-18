@@ -63,8 +63,14 @@ const fontSize = element("input", {
   max: String(FONT_SIZE_MAX),
   step: "1",
 });
-const fontSizeValue = element("output");
-fontSizeValue.setAttribute("for", "font-size");
+const fontSizeValue = element(
+  "select",
+  { id: "font-size-value", className: "size-picker" },
+  Array.from({ length: FONT_SIZE_MAX - FONT_SIZE_MIN + 1 }, (_, i) => {
+    const size = String(FONT_SIZE_MIN + i);
+    return element("option", { value: size, textContent: size });
+  }),
+);
 const fontSizeLabel = element("label", { htmlFor: "font-size" });
 
 const preview = element("p", { className: "preview" });
@@ -106,7 +112,8 @@ function render(settings: Settings): void {
   darkMode.setAttribute("aria-checked", String(settings.darkMode));
   language.value = settings.language;
   if (document.activeElement !== fontSize) fontSize.value = String(settings.fontSize);
-  fontSizeValue.textContent = String(settings.fontSize);
+  fontSizeValue.value = String(settings.fontSize);
+  fontSizeValue.setAttribute("aria-label", strings.fontSize);
   tabInfo.replaceChildren(`${strings.thisTab}: `, element("code", { textContent: store.tabId.slice(0, 8) }));
   const syncText =
     lastSync?.latencyMs !== undefined ? `${lastSync.latencyMs.toFixed(1)} ms` : lastSync ? "storage" : strings.noSyncYet;
@@ -117,8 +124,14 @@ darkMode.addEventListener("change", () => store.update("darkMode", darkMode.chec
 language.addEventListener("change", () => {
   if (isLanguage(language.value)) store.update("language", language.value);
 });
-fontSize.addEventListener("input", () => store.update("fontSize", Number(fontSize.value)));
-fontSize.addEventListener("change", () => render(store.settings));
+fontSize.addEventListener("input", () => {
+  fontSizeValue.value = fontSize.value;
+});
+fontSize.addEventListener("change", () => {
+  store.update("fontSize", Number(fontSize.value));
+  render(store.settings);
+});
+fontSizeValue.addEventListener("change", () => store.update("fontSize", Number(fontSizeValue.value)));
 
 window.addEventListener("storage", (event) => {
   if (event.storageArea === window.localStorage && event.key === STORAGE_KEY) {
