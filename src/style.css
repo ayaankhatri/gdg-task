@@ -118,10 +118,16 @@ main {
     flex-wrap: wrap;
   }
 
+  .brand {
+    flex: 1 1 0;
+  }
+
   .site-nav {
     order: 3;
     width: 100%;
     margin-right: 0;
+    flex-wrap: wrap;
+    overflow-x: visible;
   }
 }
 
