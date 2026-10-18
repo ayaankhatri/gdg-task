@@ -51,6 +51,18 @@ npm test
 | `src/i18n.ts` | UI strings for each language |
 | `src/*.test.ts` | Vitest unit tests for merge properties and multi-tab behaviour |
 
+## External libraries
+
+The app has no runtime dependencies. Everything it ships uses browser APIs only (`BroadcastChannel`, `localStorage`, `crypto.randomUUID`, `performance`). Development tools:
+
+| Library | Use |
+| --- | --- |
+| [TypeScript](https://www.typescriptlang.org/) | Language and type checking (`tsc --noEmit`) |
+| [Vite](https://vite.dev/) | Dev server and production bundler |
+| [Vitest](https://vitest.dev/) | Unit test runner |
+
+No external fonts, icons or other assets are used.
+
 ## Technical explanation
 
 ### Synchronization
