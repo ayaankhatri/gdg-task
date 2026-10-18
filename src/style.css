@@ -97,10 +97,10 @@ select {
   gap: 0.6rem;
 }
 
-.slider output {
-  min-width: 3ch;
-  text-align: right;
+.size-picker {
+  min-width: 4.5ch;
   font-variant-numeric: tabular-nums;
+  cursor: pointer;
 }
 
 .switch {
