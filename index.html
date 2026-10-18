@@ -3,7 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Settings Sync</title>
+    <meta name="color-scheme" content="light dark" />
+    <title>Preferences</title>
+    <style>
+      html { background: #f6f7f9; }
+      html[data-theme="dark"] { background: #121418; }
+    </style>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var dark = false;
+        try {
+          var state = JSON.parse(localStorage.getItem("settings-sync:v1") || "null");
+          if (state) {
+            dark = state.darkMode && state.darkMode.value === true;
+            var lang = state.language && state.language.value;
+            if (["en", "es", "fr", "de", "hi"].indexOf(lang) !== -1) root.lang = lang;
+            var size = state.fontSize && state.fontSize.value;
+            if (typeof size === "number" && size >= 12 && size <= 24) root.style.setProperty("--font-size", size + "px");
+          }
+        } catch (e) {}
+        root.dataset.theme = dark ? "dark" : "light";
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>
