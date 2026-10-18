@@ -1,4 +1,5 @@
 import "./style.css";
+import logoUrl from "./assets/gdg-logo.svg";
 import { LANGUAGE_NAMES, STRINGS } from "./i18n";
 import { FONT_SIZE_MAX, FONT_SIZE_MIN, LANGUAGES, isLanguage, type Settings } from "./settings";
 import { CHANNEL_NAME, STORAGE_KEY, SettingsStore, type ChangeInfo, type Transport } from "./store";
@@ -28,6 +29,24 @@ function element<K extends keyof HTMLElementTagNameMap>(
   return node;
 }
 
+function svg(tag: string, attrs: Record<string, string>, children: SVGElement[] = []): SVGElement {
+  const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const [name, value] of Object.entries(attrs)) node.setAttribute(name, value);
+  node.append(...children);
+  return node;
+}
+
+function settingsIcon(): SVGElement {
+  return svg("svg", { viewBox: "0 0 24 24", width: "18", height: "18", "aria-hidden": "true" }, [
+    svg("g", { fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round" }, [
+      svg("path", { d: "M4 6h16M4 12h16M4 18h16" }),
+      svg("circle", { cx: "9", cy: "6", r: "2.2", fill: "var(--surface)" }),
+      svg("circle", { cx: "15", cy: "12", r: "2.2", fill: "var(--surface)" }),
+      svg("circle", { cx: "7", cy: "18", r: "2.2", fill: "var(--surface)" }),
+    ]),
+  ]);
+}
+
 function applyToDocument(settings: Settings): void {
   const root = document.documentElement;
   root.dataset.theme = settings.darkMode ? "dark" : "light";
@@ -42,7 +61,14 @@ const store = new SettingsStore({
   now: () => performance.timeOrigin + performance.now(),
 });
 
-const title = element("h1");
+const APP_TITLE = "GDG-VIT Frontend Task 1";
+
+const settingsButton = element("button", { type: "button", className: "settings-button" });
+const settingsButtonLabel = element("span");
+settingsButton.append(settingsIcon(), settingsButtonLabel);
+
+const title = element("h2", { id: "settings-title" });
+const closeButton = element("button", { type: "button", className: "close-button", textContent: "×" });
 const subtitle = element("p", { className: "subtitle" });
 
 const darkMode = element("input", { type: "checkbox", id: "dark-mode", className: "switch" });
@@ -78,21 +104,31 @@ const tabInfo = element("span");
 const syncInfo = element("span");
 const hint = element("span");
 
-document.getElementById("app")!.replaceWith(
-  element("main", {}, [
-    title,
-    subtitle,
-    element("section", { className: "card" }, [
-      element("div", { className: "row" }, [darkLabel, darkMode]),
-      element("div", { className: "row" }, [languageLabel, language]),
-      element("div", { className: "row" }, [
-        fontSizeLabel,
-        element("div", { className: "slider" }, [fontSize, fontSizeValue]),
-      ]),
+const settingsDialog = element("dialog", { className: "settings" }, [
+  element("div", { className: "settings-header" }, [title, closeButton]),
+  subtitle,
+  element("section", { className: "card" }, [
+    element("div", { className: "row" }, [darkLabel, darkMode]),
+    element("div", { className: "row" }, [languageLabel, language]),
+    element("div", { className: "row" }, [
+      fontSizeLabel,
+      element("div", { className: "slider" }, [fontSize, fontSizeValue]),
     ]),
-    preview,
-    element("footer", { className: "status" }, [tabInfo, syncInfo, hint]),
   ]),
+  element("div", { className: "status" }, [tabInfo, syncInfo, hint]),
+]);
+settingsDialog.setAttribute("aria-labelledby", "settings-title");
+
+document.getElementById("app")!.replaceWith(
+  element("header", { className: "site-header" }, [
+    element("div", { className: "brand" }, [
+      element("img", { src: logoUrl, alt: "GDG logo", className: "brand-logo" }),
+      element("h1", { textContent: APP_TITLE }),
+    ]),
+    settingsButton,
+  ]),
+  element("main", {}, [preview]),
+  settingsDialog,
 );
 
 let lastSync: ChangeInfo | undefined;
@@ -100,7 +136,9 @@ let lastSync: ChangeInfo | undefined;
 function render(settings: Settings): void {
   const strings = STRINGS[settings.language];
   applyToDocument(settings);
-  document.title = strings.title;
+  document.title = APP_TITLE;
+  settingsButtonLabel.textContent = strings.settings;
+  closeButton.setAttribute("aria-label", strings.close);
   title.textContent = strings.title;
   subtitle.textContent = strings.subtitle;
   darkLabel.textContent = strings.darkMode;
@@ -119,6 +157,12 @@ function render(settings: Settings): void {
     lastSync?.latencyMs !== undefined ? `${lastSync.latencyMs.toFixed(1)} ms` : lastSync ? "storage" : strings.noSyncYet;
   syncInfo.textContent = `${strings.lastSync}: ${syncText}`;
 }
+
+settingsButton.addEventListener("click", () => settingsDialog.showModal());
+closeButton.addEventListener("click", () => settingsDialog.close());
+settingsDialog.addEventListener("click", (event) => {
+  if (event.target === settingsDialog) settingsDialog.close();
+});
 
 darkMode.addEventListener("change", () => store.update("darkMode", darkMode.checked));
 language.addEventListener("change", () => {
