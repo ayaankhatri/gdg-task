@@ -6,11 +6,14 @@ export interface Strings {
   darkMode: string;
   language: string;
   fontSize: string;
-  preview: string;
   thisTab: string;
   lastSync: string;
   noSyncYet: string;
   hint: string;
+  settings: string;
+  close: string;
+  madeBy: string;
+  textSource: string;
 }
 
 export const LANGUAGE_NAMES: Record<Language, string> = {
@@ -28,11 +31,14 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "Dark mode",
     language: "Language",
     fontSize: "Font size",
-    preview: "The quick brown fox jumps over the lazy dog.",
     thisTab: "This tab",
     lastSync: "Last update from another tab",
     noSyncYet: "none yet",
     hint: "Open this page in another tab and change a setting.",
+    settings: "Settings",
+    close: "Close",
+    madeBy: "Made by",
+    textSource: "Text adapted from",
   },
   es: {
     title: "Preferencias",
@@ -40,11 +46,14 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "Modo oscuro",
     language: "Idioma",
     fontSize: "Tamaño de letra",
-    preview: "El veloz murciélago hindú comía feliz cardillo y kiwi.",
     thisTab: "Esta pestaña",
     lastSync: "Última actualización de otra pestaña",
     noSyncYet: "ninguna aún",
     hint: "Abre esta página en otra pestaña y cambia un ajuste.",
+    settings: "Ajustes",
+    close: "Cerrar",
+    madeBy: "Hecho por",
+    textSource: "Texto adaptado de",
   },
   fr: {
     title: "Préférences",
@@ -52,11 +61,14 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "Mode sombre",
     language: "Langue",
     fontSize: "Taille du texte",
-    preview: "Portez ce vieux whisky au juge blond qui fume.",
     thisTab: "Cet onglet",
     lastSync: "Dernière mise à jour d'un autre onglet",
     noSyncYet: "aucune pour l'instant",
     hint: "Ouvrez cette page dans un autre onglet et modifiez un réglage.",
+    settings: "Paramètres",
+    close: "Fermer",
+    madeBy: "Réalisé par",
+    textSource: "Texte adapté de",
   },
   de: {
     title: "Einstellungen",
@@ -64,11 +76,14 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "Dunkelmodus",
     language: "Sprache",
     fontSize: "Schriftgröße",
-    preview: "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern.",
     thisTab: "Dieser Tab",
     lastSync: "Letzte Änderung aus einem anderen Tab",
     noSyncYet: "noch keine",
     hint: "Öffne diese Seite in einem anderen Tab und ändere eine Einstellung.",
+    settings: "Einstellungen",
+    close: "Schließen",
+    madeBy: "Erstellt von",
+    textSource: "Text übernommen aus",
   },
   hi: {
     title: "पसंद",
@@ -76,10 +91,13 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "डार्क मोड",
     language: "भाषा",
     fontSize: "फ़ॉन्ट आकार",
-    preview: "यह पूर्वावलोकन पाठ फ़ॉन्ट आकार दिखाता है।",
     thisTab: "यह टैब",
     lastSync: "दूसरे टैब से आख़िरी बदलाव",
     noSyncYet: "अभी कोई नहीं",
     hint: "इस पेज को दूसरे टैब में खोलें और कोई सेटिंग बदलें।",
+    settings: "सेटिंग्स",
+    close: "बंद करें",
+    madeBy: "निर्माता",
+    textSource: "पाठ का स्रोत",
   },
 };

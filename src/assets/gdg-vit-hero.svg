@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-label="GDG VIT Frontend Task 1 banner">
+  <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#d9c8a9"/>
+    </pattern>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7efe1"/>
+      <stop offset="1" stop-color="#eadbc2"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="420" rx="28" fill="url(#bg)"/>
+  <rect width="960" height="420" rx="28" fill="url(#dots)" opacity="0.7"/>
+  <circle cx="860" cy="70" r="120" fill="#4285F4" opacity="0.10"/>
+  <circle cx="90" cy="380" r="110" fill="#FBBC04" opacity="0.14"/>
+  <circle cx="760" cy="390" r="70" fill="#34A853" opacity="0.12"/>
+  <circle cx="200" cy="40" r="50" fill="#EA4335" opacity="0.10"/>
+  <g transform="translate(96 118)" fill="none" stroke-linecap="round" stroke-width="30">
+    <path d="M92 18 L24 82" stroke="#EA4335"/>
+    <path d="M24 82 L92 146" stroke="#4285F4"/>
+    <path d="M152 18 L220 82" stroke="#34A853"/>
+    <path d="M220 82 L152 146" stroke="#FBBC04"/>
+  </g>
+  <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" fill="#2e2922">
+    <text x="384" y="176" font-size="64" font-weight="700">GDG VIT</text>
+    <text x="386" y="220" font-size="24" fill="#6c6152">Google Developer Groups</text>
+    <text x="386" y="286" font-size="28" font-weight="600">Frontend Task 1</text>
+    <text x="386" y="322" font-size="22" fill="#6c6152">Multi-Tab Settings Synchronization</text>
+  </g>
+  <g transform="translate(770 220)">
+    <rect width="120" height="84" rx="12" fill="#fbf6ec" stroke="#d9c8a9" stroke-width="2"/>
+    <rect x="12" y="14" width="60" height="8" rx="4" fill="#4285F4"/>
+    <rect x="12" y="32" width="96" height="8" rx="4" fill="#d9c8a9"/>
+    <rect x="12" y="50" width="76" height="8" rx="4" fill="#d9c8a9"/>
+    <rect x="12" y="66" width="40" height="6" rx="3" fill="#34A853"/>
+  </g>
+  <g transform="translate(730 150)">
+    <rect width="120" height="84" rx="12" fill="#fbf6ec" stroke="#d9c8a9" stroke-width="2"/>
+    <rect x="12" y="14" width="60" height="8" rx="4" fill="#EA4335"/>
+    <rect x="12" y="32" width="96" height="8" rx="4" fill="#d9c8a9"/>
+    <rect x="12" y="50" width="76" height="8" rx="4" fill="#d9c8a9"/>
+    <rect x="12" y="66" width="40" height="6" rx="3" fill="#FBBC04"/>
+  </g>
+</svg>
