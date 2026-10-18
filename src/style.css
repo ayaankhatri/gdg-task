@@ -23,6 +23,11 @@
   box-sizing: border-box;
 }
 
+.instant *,
+.instant *::after {
+  transition: none !important;
+}
+
 html {
   font-size: var(--font-size);
 }
