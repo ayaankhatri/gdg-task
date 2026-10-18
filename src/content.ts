@@ -69,3 +69,43 @@ export const ARTICLE: ArticleSection[] = [
     ],
   },
 ];
+
+export const LETRASET_IMAGE = {
+  alt: "Letraset sample sheet printed with Lorem ipsum placeholder text",
+  caption: "A Letraset sample sheet set in Lorem ipsum, probably from the 1970s.",
+  credit: "Letraset, public domain, via Wikimedia Commons",
+  creditUrl: "https://commons.wikimedia.org/wiki/File:Letraset_Lorem_Ipsum.jpg",
+};
+
+export const SAMPLE_PASSAGE =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+export const ABOUT: ArticleSection[] = [
+  {
+    heading: "What it is",
+    paragraphs: [
+      [
+        { em: "Lorem ipsum" },
+        " is dummy text that designers and typesetters drop into a layout before the real copy is ready. It looks like ordinary prose but carries no meaning, so readers notice the typeface, spacing and structure of the page instead of what the words say.",
+      ],
+    ],
+  },
+  {
+    heading: "The standard passage",
+    paragraphs: [
+      [
+        "The most common version opens with the paragraph below. It is scrambled Latin taken from Cicero's ",
+        { em: "De finibus bonorum et malorum" },
+        ", written in 45 BC, with words cut, changed and added along the way.",
+      ],
+    ],
+  },
+  {
+    heading: "Where you will find it",
+    paragraphs: [
+      [
+        "Letraset dry-transfer sheets spread the text through the print industry from the late 1960s. Today it ships with word processors such as Apple Pages and Microsoft Word, appears in many LaTeX packages, and is used by content management systems like WordPress and Joomla! and by front-end libraries such as Semantic UI.",
+      ],
+    ],
+  },
+];
