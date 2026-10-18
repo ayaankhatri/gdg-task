@@ -3,17 +3,17 @@ import heroUrl from "./assets/gdg-vit-hero.svg";
 import logoUrl from "./assets/gdg-logo.svg";
 import letrasetUrl from "./assets/letraset-lorem-ipsum.jpg";
 import {
-  ABOUT,
-  ARTICLE,
   ARTICLE_LICENSE_URL,
   ARTICLE_SOURCE_URL,
-  LETRASET_IMAGE,
+  CONTENT,
+  LETRASET_CREDIT_URL,
   SAMPLE_PASSAGE,
   type ArticleSection,
+  type PageContent,
   type Segment,
 } from "./content";
 import { LANGUAGE_NAMES, STRINGS } from "./i18n";
-import { FONT_SIZE_MAX, FONT_SIZE_MIN, LANGUAGES, isLanguage, type Settings } from "./settings";
+import { FONT_SIZE_MAX, FONT_SIZE_MIN, LANGUAGES, isLanguage, type Language, type Settings } from "./settings";
 import { CHANNEL_NAME, STORAGE_KEY, SettingsStore, type ChangeInfo, type Transport } from "./store";
 
 function createTransport(): Transport {
@@ -76,37 +76,37 @@ function renderSection(section: ArticleSection): HTMLElement {
   ]);
 }
 
-function homePage(): HTMLElement[] {
+function homePage(text: PageContent, language: Language): HTMLElement[] {
   return [
     element("figure", { className: "hero" }, [
       element("img", {
         src: heroUrl,
-        alt: "GDG VIT banner with the Google Developer Groups brackets logo",
+        alt: text.heroAlt,
         width: 960,
         height: 420,
       }),
     ]),
-    element("article", { className: "article", lang: "en" }, ARTICLE.map(renderSection)),
+    element("article", { className: "article", lang: language }, text.article.map(renderSection)),
   ];
 }
 
-function aboutPage(): HTMLElement[] {
-  const sections = ABOUT.map(renderSection);
+function aboutPage(text: PageContent, language: Language): HTMLElement[] {
+  const sections = text.about.map(renderSection);
   sections[1].append(element("blockquote", { className: "sample", lang: "la", textContent: SAMPLE_PASSAGE }));
   const figure = element("figure", { className: "about-figure" }, [
-    element("img", { src: letrasetUrl, alt: LETRASET_IMAGE.alt, width: 292, height: 459 }),
+    element("img", { src: letrasetUrl, alt: text.letraset.alt, width: 292, height: 459 }),
     element("figcaption", {}, [
-      document.createTextNode(LETRASET_IMAGE.caption),
+      document.createTextNode(text.letraset.caption),
       element("br"),
       element("a", {
-        href: LETRASET_IMAGE.creditUrl,
-        textContent: LETRASET_IMAGE.credit,
+        href: LETRASET_CREDIT_URL,
+        textContent: text.letraset.credit,
         target: "_blank",
         rel: "noopener noreferrer",
       }),
     ]),
   ]);
-  return [element("article", { className: "article", lang: "en" }, [figure, ...sections])];
+  return [element("article", { className: "article", lang: language }, [figure, ...sections])];
 }
 
 type Route = "home" | "about";
@@ -253,9 +253,15 @@ function fitHeader(): void {
   if (!header.classList.contains("compact")) setMenuOpen(false);
 }
 
-function showRoute(): void {
+let shownPage = "";
+
+function showRoute(language: Language): void {
   const route = currentRoute();
-  content.replaceChildren(...(route === "about" ? aboutPage() : homePage()));
+  const page = `${route}:${language}`;
+  if (page === shownPage) return;
+  shownPage = page;
+  const text = CONTENT[language];
+  content.replaceChildren(...(route === "about" ? aboutPage(text, language) : homePage(text, language)));
   for (const [name, link] of Object.entries(navLinks)) {
     if (name === route) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -274,6 +280,7 @@ let lastSync: ChangeInfo | undefined;
 function render(settings: Settings, animate = false): void {
   const strings = STRINGS[settings.language];
   applyToDocument(settings, animate);
+  showRoute(settings.language);
   document.title = APP_TITLE;
   settingsButtonLabel.textContent = strings.settings;
   navLinks.home.textContent = strings.navHome;
@@ -361,10 +368,9 @@ store.subscribe((settings, info) => {
   render(settings, info.source === "local");
 });
 window.addEventListener("hashchange", () => {
-  showRoute();
+  showRoute(store.settings.language);
   window.scrollTo(0, 0);
 });
 
 store.start();
-showRoute();
 render(store.settings);
