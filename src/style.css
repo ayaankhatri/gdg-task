@@ -38,7 +38,7 @@ body {
 }
 
 main {
-  max-width: 46rem;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
@@ -51,7 +51,7 @@ main {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.75rem max(1rem, calc((100% - 46rem) / 2 + 1rem));
+  padding: 0.75rem max(1rem, calc((100% - 1100px) / 2 + 1rem));
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
