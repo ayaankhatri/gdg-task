@@ -115,6 +115,24 @@ describe("SettingsStore", () => {
     expect(a.settings).toEqual({ darkMode: false, language: "en", fontSize: 16 });
   });
 
+  it("re-validates every field of each incoming message", () => {
+    const storage = new FakeStorage();
+    const bus = new FakeBus();
+    const a = makeTab("a", storage, bus);
+    bus.deliver({
+      type: "state",
+      from: "x",
+      sentAt: 0,
+      state: {
+        darkMode: { value: "true", stamp: { counter: 5, tabId: "x" } },
+        language: { value: "fr", stamp: { counter: 5, tabId: "x" } },
+        fontSize: { value: 500, stamp: { counter: 5, tabId: "x" } },
+        injected: { value: 1, stamp: { counter: 5, tabId: "x" } },
+      },
+    } as unknown as SyncMessage);
+    expect(a.settings).toEqual({ darkMode: false, language: "fr", fontSize: 24 });
+  });
+
   it("rejects invalid local values", () => {
     const storage = new FakeStorage();
     const a = makeTab("a", storage, new FakeBus());

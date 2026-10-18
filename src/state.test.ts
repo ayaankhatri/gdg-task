@@ -65,6 +65,17 @@ describe("parseState", () => {
     expect(parsed?.fontSize.value).toBe(24);
   });
 
+  it("copies only known keys into a fresh object", () => {
+    const raw = JSON.parse(
+      '{"__proto__":{"polluted":true},"extra":1,"darkMode":{"value":true,"stamp":{"counter":1,"tabId":"t"},"extra":2}}',
+    );
+    const parsed = parseState(raw);
+    expect(Object.keys(parsed ?? {})).toEqual(["darkMode", "language", "fontSize"]);
+    expect(Object.keys(parsed?.darkMode ?? {})).toEqual(["value", "stamp"]);
+    expect(Object.getPrototypeOf(parsed)).toBe(Object.prototype);
+    expect(({} as Record<string, unknown>).polluted).toBeUndefined();
+  });
+
   it("rejects malformed stamps", () => {
     const parsed = parseState({ darkMode: { value: true, stamp: { counter: -1, tabId: "t" } } });
     expect(parsed?.darkMode.value).toBe(false);
