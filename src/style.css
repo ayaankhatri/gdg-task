@@ -207,6 +207,36 @@ select {
   font-variant-numeric: tabular-nums;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+}
+
+.site-footer {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--muted);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.site-footer p {
+  margin: 0.25rem 0;
+}
+
+.footer-note {
+  font-size: 0.875rem;
+}
+
+a {
+  color: var(--accent);
+}
+
 .switch {
   appearance: none;
   flex: none;

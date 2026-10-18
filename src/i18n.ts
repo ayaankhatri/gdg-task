@@ -12,6 +12,8 @@ export interface Strings {
   hint: string;
   settings: string;
   close: string;
+  madeBy: string;
+  textSource: string;
 }
 
 export const LANGUAGE_NAMES: Record<Language, string> = {
@@ -35,6 +37,8 @@ export const STRINGS: Record<Language, Strings> = {
     hint: "Open this page in another tab and change a setting.",
     settings: "Settings",
     close: "Close",
+    madeBy: "Made by",
+    textSource: "Text adapted from",
   },
   es: {
     title: "Preferencias",
@@ -48,6 +52,8 @@ export const STRINGS: Record<Language, Strings> = {
     hint: "Abre esta página en otra pestaña y cambia un ajuste.",
     settings: "Ajustes",
     close: "Cerrar",
+    madeBy: "Hecho por",
+    textSource: "Texto adaptado de",
   },
   fr: {
     title: "Préférences",
@@ -61,6 +67,8 @@ export const STRINGS: Record<Language, Strings> = {
     hint: "Ouvrez cette page dans un autre onglet et modifiez un réglage.",
     settings: "Paramètres",
     close: "Fermer",
+    madeBy: "Réalisé par",
+    textSource: "Texte adapté de",
   },
   de: {
     title: "Einstellungen",
@@ -74,6 +82,8 @@ export const STRINGS: Record<Language, Strings> = {
     hint: "Öffne diese Seite in einem anderen Tab und ändere eine Einstellung.",
     settings: "Einstellungen",
     close: "Schließen",
+    madeBy: "Erstellt von",
+    textSource: "Text übernommen aus",
   },
   hi: {
     title: "पसंद",
@@ -87,5 +97,7 @@ export const STRINGS: Record<Language, Strings> = {
     hint: "इस पेज को दूसरे टैब में खोलें और कोई सेटिंग बदलें।",
     settings: "सेटिंग्स",
     close: "बंद करें",
+    madeBy: "निर्माता",
+    textSource: "पाठ का स्रोत",
   },
 };

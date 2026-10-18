@@ -1,7 +1,7 @@
 import "./style.css";
 import heroUrl from "./assets/gdg-vit-hero.svg";
 import logoUrl from "./assets/gdg-logo.svg";
-import { ARTICLE, type Segment } from "./content";
+import { ARTICLE, ARTICLE_LICENSE_URL, ARTICLE_SOURCE_URL, type Segment } from "./content";
 import { LANGUAGE_NAMES, STRINGS } from "./i18n";
 import { FONT_SIZE_MAX, FONT_SIZE_MIN, LANGUAGES, isLanguage, type Settings } from "./settings";
 import { CHANNEL_NAME, STORAGE_KEY, SettingsStore, type ChangeInfo, type Transport } from "./store";
@@ -81,6 +81,14 @@ const store = new SettingsStore({
 });
 
 const APP_TITLE = "GDG-VIT Frontend Task 1";
+const GITHUB_URL = "https://github.com/ayaankhatri";
+
+function externalLink(href: string, text: string): HTMLAnchorElement {
+  return element("a", { href, textContent: text, target: "_blank", rel: "noopener noreferrer" });
+}
+
+const madeBy = element("p");
+const textSource = element("p", { className: "footer-note" });
 
 const settingsButton = element("button", { type: "button", className: "settings-button" });
 const settingsButtonLabel = element("span");
@@ -156,6 +164,7 @@ document.getElementById("app")!.replaceWith(
     ]),
     renderArticle(),
   ]),
+  element("footer", { className: "site-footer" }, [madeBy, textSource]),
   settingsDialog,
 );
 
@@ -166,6 +175,13 @@ function render(settings: Settings): void {
   applyToDocument(settings);
   document.title = APP_TITLE;
   settingsButtonLabel.textContent = strings.settings;
+  madeBy.replaceChildren(`${strings.madeBy} `, externalLink(GITHUB_URL, "ayaankhatri"));
+  textSource.replaceChildren(
+    `${strings.textSource} `,
+    externalLink(ARTICLE_SOURCE_URL, "Wikipedia"),
+    " · ",
+    externalLink(ARTICLE_LICENSE_URL, "CC BY-SA 4.0"),
+  );
   closeButton.setAttribute("aria-label", strings.close);
   title.textContent = strings.title;
   subtitle.textContent = strings.subtitle;
