@@ -4,8 +4,10 @@ GDG Tech Wildcard Entry, Frontend Task 1. A TypeScript web app that keeps user p
 
 ## Features
 
-- Dark-mode toggle, language selector (English, Español, Français, Deutsch, हिन्दी), font-size slider (12–24 px).
-- Real-time sync between tabs without reloading. Measured latency is shown in the footer (typically under 1 ms on the same machine; the target is 100 ms).
+- A GDG-VIT themed page (beige light theme with a warm dark variant) with a header, a GDG-VIT banner, an article, and a footer.
+- A **Settings** button in the header opens a preferences dialog with a dark-mode toggle, a language selector (English, Español, Français, Deutsch, हिन्दी), and a font-size slider plus dropdown (12–24 px). The slider applies the new size when released.
+- The whole page, including the banner image, scales proportionally with the chosen font size.
+- Real-time sync between tabs without reloading. Measured latency is shown in the settings dialog (typically under 1 ms on the same machine; the target is 100 ms).
 - Preferences persist after all tabs are closed and are restored on reopen.
 - New tabs render with the correct theme, language and font size on the first paint, with no flash of the wrong theme.
 - Simultaneous edits from different tabs converge to the same values in every tab and in storage.
@@ -22,7 +24,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 in two or more tabs and change a setting in any of them.
+Open http://localhost:5173 in two or more tabs, click **Settings** in any of them and change a setting.
 
 Production build and preview:
 
@@ -49,6 +51,8 @@ npm test
 | `src/store.ts` | `SettingsStore`: local edits, persistence, cross-tab messaging |
 | `src/main.ts` | DOM UI, browser transport (BroadcastChannel), storage and visibility events |
 | `src/i18n.ts` | UI strings for each language |
+| `src/content.ts` | Article text (Meaning and Origins) |
+| `src/assets/` | GDG-VIT logo and banner (SVG) |
 | `src/*.test.ts` | Vitest unit tests for merge properties and multi-tab behaviour |
 
 ## External libraries
@@ -61,7 +65,9 @@ The app has no runtime dependencies. Everything it ships uses browser APIs only 
 | [Vite](https://vite.dev/) | Dev server and production bundler |
 | [Vitest](https://vitest.dev/) | Unit test runner |
 
-No external fonts, icons or other assets are used.
+No external fonts, icons or other assets are used. The GDG-VIT logo and banner in `src/assets/` are SVGs made for this project in the style of the GDG brackets logo.
+
+The article text is adapted from the Wikipedia article [Lorem ipsum](https://en.wikipedia.org/wiki/Lorem_ipsum), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). It is shown in English in every UI language.
 
 ## Technical explanation
 
