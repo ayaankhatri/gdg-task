@@ -117,15 +117,19 @@ function currentRoute(): Route {
   return location.hash === ROUTES.about ? "about" : "home";
 }
 
+let instantFrame = 0;
+
 function applyToDocument(settings: Settings, animate: boolean): void {
   const root = document.documentElement;
-  if (!animate) root.classList.add("instant");
+  cancelAnimationFrame(instantFrame);
+  root.classList.toggle("instant", !animate);
   root.dataset.theme = settings.darkMode ? "dark" : "light";
   root.lang = settings.language;
   root.style.setProperty("--font-size", `${settings.fontSize}px`);
   if (!animate) {
-    void document.body.offsetWidth;
-    root.classList.remove("instant");
+    instantFrame = requestAnimationFrame(() => {
+      instantFrame = requestAnimationFrame(() => root.classList.remove("instant"));
+    });
   }
 }
 
