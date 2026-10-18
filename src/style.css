@@ -247,12 +247,36 @@ input[type="range"]:focus-visible {
   outline-offset: 2px;
 }
 
-.preview {
-  margin: 1.5rem 0;
-  padding: 1rem 1.25rem;
-  border-left: 3px solid var(--accent);
-  background: var(--surface);
-  border-radius: 0.4rem;
+.hero {
+  margin: 0 0 2rem;
+}
+
+.hero img {
+  display: block;
+  width: 40rem;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+}
+
+.article h2 {
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.3rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  border-bottom: 1px solid var(--border);
+}
+
+.article section:first-child h2 {
+  margin-top: 0;
+}
+
+.article p {
+  margin: 0 0 1rem;
+  line-height: 1.7;
 }
 
 .status {

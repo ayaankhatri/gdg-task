@@ -1,5 +1,7 @@
 import "./style.css";
+import heroUrl from "./assets/gdg-vit-hero.svg";
 import logoUrl from "./assets/gdg-logo.svg";
+import { ARTICLE, type Segment } from "./content";
 import { LANGUAGE_NAMES, STRINGS } from "./i18n";
 import { FONT_SIZE_MAX, FONT_SIZE_MIN, LANGUAGES, isLanguage, type Settings } from "./settings";
 import { CHANNEL_NAME, STORAGE_KEY, SettingsStore, type ChangeInfo, type Transport } from "./store";
@@ -45,6 +47,23 @@ function settingsIcon(): SVGElement {
       svg("circle", { cx: "7", cy: "18", r: "2.2", fill: "var(--surface)" }),
     ]),
   ]);
+}
+
+function renderSegment(segment: Segment): Node {
+  return typeof segment === "string" ? document.createTextNode(segment) : element("em", { textContent: segment.em });
+}
+
+function renderArticle(): HTMLElement {
+  return element(
+    "article",
+    { className: "article", lang: "en" },
+    ARTICLE.map((section) =>
+      element("section", {}, [
+        element("h2", { textContent: section.heading }),
+        ...section.paragraphs.map((paragraph) => element("p", {}, paragraph.map(renderSegment))),
+      ]),
+    ),
+  );
 }
 
 function applyToDocument(settings: Settings): void {
@@ -99,7 +118,6 @@ const fontSizeValue = element(
 );
 const fontSizeLabel = element("label", { htmlFor: "font-size" });
 
-const preview = element("p", { className: "preview" });
 const tabInfo = element("span");
 const syncInfo = element("span");
 const hint = element("span");
@@ -127,7 +145,17 @@ document.getElementById("app")!.replaceWith(
     ]),
     settingsButton,
   ]),
-  element("main", {}, [preview]),
+  element("main", {}, [
+    element("figure", { className: "hero" }, [
+      element("img", {
+        src: heroUrl,
+        alt: "GDG VIT banner with the Google Developer Groups brackets logo",
+        width: 960,
+        height: 420,
+      }),
+    ]),
+    renderArticle(),
+  ]),
   settingsDialog,
 );
 
@@ -144,7 +172,6 @@ function render(settings: Settings): void {
   darkLabel.textContent = strings.darkMode;
   languageLabel.textContent = strings.language;
   fontSizeLabel.textContent = strings.fontSize;
-  preview.textContent = strings.preview;
   hint.textContent = strings.hint;
   darkMode.checked = settings.darkMode;
   darkMode.setAttribute("aria-checked", String(settings.darkMode));

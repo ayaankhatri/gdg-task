@@ -6,7 +6,6 @@ export interface Strings {
   darkMode: string;
   language: string;
   fontSize: string;
-  preview: string;
   thisTab: string;
   lastSync: string;
   noSyncYet: string;
@@ -30,7 +29,6 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "Dark mode",
     language: "Language",
     fontSize: "Font size",
-    preview: "The quick brown fox jumps over the lazy dog.",
     thisTab: "This tab",
     lastSync: "Last update from another tab",
     noSyncYet: "none yet",
@@ -44,7 +42,6 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "Modo oscuro",
     language: "Idioma",
     fontSize: "Tamaño de letra",
-    preview: "El veloz murciélago hindú comía feliz cardillo y kiwi.",
     thisTab: "Esta pestaña",
     lastSync: "Última actualización de otra pestaña",
     noSyncYet: "ninguna aún",
@@ -58,7 +55,6 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "Mode sombre",
     language: "Langue",
     fontSize: "Taille du texte",
-    preview: "Portez ce vieux whisky au juge blond qui fume.",
     thisTab: "Cet onglet",
     lastSync: "Dernière mise à jour d'un autre onglet",
     noSyncYet: "aucune pour l'instant",
@@ -72,7 +68,6 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "Dunkelmodus",
     language: "Sprache",
     fontSize: "Schriftgröße",
-    preview: "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern.",
     thisTab: "Dieser Tab",
     lastSync: "Letzte Änderung aus einem anderen Tab",
     noSyncYet: "noch keine",
@@ -86,7 +81,6 @@ export const STRINGS: Record<Language, Strings> = {
     darkMode: "डार्क मोड",
     language: "भाषा",
     fontSize: "फ़ॉन्ट आकार",
-    preview: "यह पूर्वावलोकन पाठ फ़ॉन्ट आकार दिखाता है।",
     thisTab: "यह टैब",
     lastSync: "दूसरे टैब से आख़िरी बदलाव",
     noSyncYet: "अभी कोई नहीं",
