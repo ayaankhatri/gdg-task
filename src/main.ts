@@ -1,7 +1,17 @@
 import "./style.css";
 import heroUrl from "./assets/gdg-vit-hero.svg";
 import logoUrl from "./assets/gdg-logo.svg";
-import { ARTICLE, ARTICLE_LICENSE_URL, ARTICLE_SOURCE_URL, type Segment } from "./content";
+import letrasetUrl from "./assets/letraset-lorem-ipsum.jpg";
+import {
+  ABOUT,
+  ARTICLE,
+  ARTICLE_LICENSE_URL,
+  ARTICLE_SOURCE_URL,
+  LETRASET_IMAGE,
+  SAMPLE_PASSAGE,
+  type ArticleSection,
+  type Segment,
+} from "./content";
 import { LANGUAGE_NAMES, STRINGS } from "./i18n";
 import { FONT_SIZE_MAX, FONT_SIZE_MIN, LANGUAGES, isLanguage, type Settings } from "./settings";
 import { CHANNEL_NAME, STORAGE_KEY, SettingsStore, type ChangeInfo, type Transport } from "./store";
@@ -53,17 +63,52 @@ function renderSegment(segment: Segment): Node {
   return typeof segment === "string" ? document.createTextNode(segment) : element("em", { textContent: segment.em });
 }
 
-function renderArticle(): HTMLElement {
-  return element(
-    "article",
-    { className: "article", lang: "en" },
-    ARTICLE.map((section) =>
-      element("section", {}, [
-        element("h2", { textContent: section.heading }),
-        ...section.paragraphs.map((paragraph) => element("p", {}, paragraph.map(renderSegment))),
-      ]),
-    ),
-  );
+function renderSection(section: ArticleSection): HTMLElement {
+  return element("section", {}, [
+    element("h2", { textContent: section.heading }),
+    ...section.paragraphs.map((paragraph) => element("p", {}, paragraph.map(renderSegment))),
+  ]);
+}
+
+function homePage(): HTMLElement[] {
+  return [
+    element("figure", { className: "hero" }, [
+      element("img", {
+        src: heroUrl,
+        alt: "GDG VIT banner with the Google Developer Groups brackets logo",
+        width: 960,
+        height: 420,
+      }),
+    ]),
+    element("article", { className: "article", lang: "en" }, ARTICLE.map(renderSection)),
+  ];
+}
+
+function aboutPage(): HTMLElement[] {
+  const sections = ABOUT.map(renderSection);
+  sections[1].append(element("blockquote", { className: "sample", lang: "la", textContent: SAMPLE_PASSAGE }));
+  const figure = element("figure", { className: "about-figure" }, [
+    element("img", { src: letrasetUrl, alt: LETRASET_IMAGE.alt, width: 292, height: 459 }),
+    element("figcaption", {}, [
+      document.createTextNode(LETRASET_IMAGE.caption),
+      element("br"),
+      element("a", {
+        href: LETRASET_IMAGE.creditUrl,
+        textContent: LETRASET_IMAGE.credit,
+        target: "_blank",
+        rel: "noopener noreferrer",
+      }),
+    ]),
+  ]);
+  return [element("article", { className: "article", lang: "en" }, [figure, ...sections])];
+}
+
+type Route = "home" | "about";
+
+const ROUTES: Record<Route, string> = { home: "#/", about: "#/about" };
+
+function currentRoute(): Route {
+  return location.hash === ROUTES.about ? "about" : "home";
 }
 
 function applyToDocument(settings: Settings): void {
@@ -145,25 +190,48 @@ const settingsDialog = element("dialog", { className: "settings" }, [
 ]);
 settingsDialog.setAttribute("aria-labelledby", "settings-title");
 
+const navLinks: Record<Route, HTMLAnchorElement> = {
+  home: element("a", { href: ROUTES.home }),
+  about: element("a", { href: ROUTES.about }),
+};
+const newTabButton = element("button", { type: "button", className: "new-tab" });
+const newTabLabel = element("span");
+newTabButton.append(
+  newTabLabel,
+  svg("svg", { viewBox: "0 0 24 24", width: "14", height: "14", "aria-hidden": "true" }, [
+    svg("path", {
+      d: "M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+    }),
+  ]),
+);
+const nav = element("nav", { className: "site-nav" }, [navLinks.home, navLinks.about, newTabButton]);
+nav.setAttribute("aria-label", "Main");
+const content = element("main");
+
+function showRoute(): void {
+  const route = currentRoute();
+  content.replaceChildren(...(route === "about" ? aboutPage() : homePage()));
+  for (const [name, link] of Object.entries(navLinks)) {
+    if (name === route) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  }
+}
+
 document.getElementById("app")!.replaceWith(
   element("header", { className: "site-header" }, [
-    element("div", { className: "brand" }, [
+    element("a", { className: "brand", href: ROUTES.home }, [
       element("img", { src: logoUrl, alt: "GDG logo", className: "brand-logo" }),
       element("h1", { textContent: APP_TITLE }),
     ]),
+    nav,
     settingsButton,
   ]),
-  element("main", {}, [
-    element("figure", { className: "hero" }, [
-      element("img", {
-        src: heroUrl,
-        alt: "GDG VIT banner with the Google Developer Groups brackets logo",
-        width: 960,
-        height: 420,
-      }),
-    ]),
-    renderArticle(),
-  ]),
+  content,
   element("footer", { className: "site-footer" }, [madeBy, textSource]),
   settingsDialog,
 );
@@ -175,6 +243,9 @@ function render(settings: Settings): void {
   applyToDocument(settings);
   document.title = APP_TITLE;
   settingsButtonLabel.textContent = strings.settings;
+  navLinks.home.textContent = strings.navHome;
+  navLinks.about.textContent = strings.navAbout;
+  newTabLabel.textContent = strings.newTab;
   madeBy.replaceChildren(`${strings.madeBy} `, externalLink(GITHUB_URL, "ayaankhatri"));
   textSource.replaceChildren(
     `${strings.textSource} `,
@@ -201,6 +272,7 @@ function render(settings: Settings): void {
   syncInfo.textContent = `${strings.lastSync}: ${syncText}`;
 }
 
+newTabButton.addEventListener("click", () => window.open(location.href, "_blank", "noopener"));
 settingsButton.addEventListener("click", () => settingsDialog.showModal());
 closeButton.addEventListener("click", () => settingsDialog.close());
 settingsDialog.addEventListener("click", (event) => {
@@ -236,5 +308,11 @@ store.subscribe((settings, info) => {
   if (info.source !== "local") lastSync = info;
   render(settings);
 });
+window.addEventListener("hashchange", () => {
+  showRoute();
+  window.scrollTo(0, 0);
+});
+
 store.start();
+showRoute();
 render(store.settings);
